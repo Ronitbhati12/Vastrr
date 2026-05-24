@@ -1,0 +1,86 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Content {
+  id               Int      @id @default(autoincrement())
+  promoBar         String?  @default("FREE SHIPPING ON ALL ORDERS OVER $100")
+  marqueeText1     String?  @default("NEW COLLECTION OUT NOW")
+  marqueeText2     String?  @default("LIMITED STOCK")
+  heroBadge        String?  @default("SUMMER DROP 01")
+  heroTitle1       String?  @default("REDEFINE")
+  heroTitle2       String?  @default("YOUR REALITY.")
+  heroCta          String?  @default("SHOP COLLECTION")
+  heroDescription  String?  @db.Text
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  role       String   @default("Customer")
+  totalSpent Float    @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  orders     Order[]
+}
+
+model Collection {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?   @db.Text
+  status      String    @default("Active")
+  coverImage  String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Product {
+  id           Int        @id @default(autoincrement())
+  name         String
+  material     String
+  price        Float
+  discountRate Float      @default(0)
+  image        String
+  colorCode    String?
+  collectionId Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  inStock      Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  orderItems   OrderItem[]
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  customerId      Int
+  customer        User        @relation(fields: [customerId], references: [id])
+  totalAmount     Float
+  status          String      @default("Pending")
+  shippingStreet  String
+  shippingCity    String
+  shippingPostal  String
+  shippingCountry String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+  price     Float
+}

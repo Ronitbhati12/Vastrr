@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Syne:wght@700;800&display=swap');
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --color-dc-bg: var(--theme-bg);
+  --color-dc-text: var(--theme-text);
+  --color-dc-accent: #7C3AED;
+  --color-dc-grey: var(--theme-grey);
+}
+
+:root {
+  --theme-bg: var(--theme-text);
+  --theme-text: var(--theme-bg);
+  --theme-grey: #6B7280;
+  --theme-border: rgba(0, 0, 0, 0.1);
+  --theme-card: #E5E5E5;
+  --theme-nav-bg: rgba(245, 245, 245, 0.8);
+}
+
+.dark {
+  --theme-bg: var(--theme-bg);
+  --theme-text: var(--theme-text);
+  --theme-grey: var(--theme-grey);
+  --theme-border: rgba(255, 255, 255, 0.1);
+  --theme-card: #111111;
+  --theme-nav-bg: rgba(5, 5, 5, 0.8);
+}
+
+body {
+  margin: 0;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+::selection {
+  background: #7C3AED;
+  color: #ffffff;
+}
+
+/* Chrome Sweep / Metallic Sweep */
+.light-sweep {
+  background: linear-gradient(90deg, var(--theme-text) 20%, #7C3AED 40%, #ffffff 60%, var(--theme-text) 80%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shine 6s linear infinite;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+/* Noise overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Custom minimal dark scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--theme-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #1c1c1c;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7C3AED;
+}
+
+/* Luxury Card Hover Trail */
+.group:hover .group-hover\:animate-trail {
+  animation: card-trail 1s ease-in-out forwards;
+}
+
+@keyframes card-trail {
+  0% {
+    background: linear-gradient(
+      90deg,
+      rgba(189, 159, 103, 0) 90%,
+      rgb(189, 159, 103) 100%
+    );
+    opacity: 0;
+  }
+
+  30% {
+    background: linear-gradient(
+      90deg,
+      rgba(189, 159, 103, 0) 70%,
+      rgb(189, 159, 103) 100%
+    );
+    opacity: 1;
+  }
+
+  70% {
+    background: linear-gradient(
+      90deg,
+      rgba(189, 159, 103, 0) 70%,
+      rgb(189, 159, 103) 100%
+    );
+    opacity: 1;
+  }
+
+  95% {
+    background: linear-gradient(
+      90deg,
+      rgba(189, 159, 103, 0) 90%,
+      rgb(189, 159, 103) 100%
+    );
+    opacity: 0;
+  }
+}
